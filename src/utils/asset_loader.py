@@ -2,9 +2,11 @@ from pathlib import Path
 import sys
 import pygame
 
-# ----------------------------
-# Base path (dev + PyInstaller)
-# ----------------------------
+
+# Base path
+# Supports:
+# * PyInstaller executable
+# * Development (running from source)
 def _get_base_path():
     if getattr(sys, "frozen", False):
         # Running as PyInstaller executable
@@ -16,22 +18,19 @@ def _get_base_path():
 BASE_PATH = _get_base_path()
 ASSETS_PATH = BASE_PATH / "assets"
 
-# ----------------------------
+
 # Internal caches
-# ----------------------------
 _image_cache = {}
 _sound_cache = {}
 _font_cache = {}
 
-# ----------------------------
+
 # Path helper
-# ----------------------------
 def asset_path(*parts):
     return ASSETS_PATH.joinpath(*parts)
 
-# ----------------------------
+
 # Image loading
-# ----------------------------
 def load_image(name, convert_alpha=True):
     if name in _image_cache:
         return _image_cache[name]
@@ -47,9 +46,8 @@ def load_image(name, convert_alpha=True):
     _image_cache[name] = image
     return image
 
-# ----------------------------
+
 # Sound loading
-# ----------------------------
 def load_sound(name):
     if name in _sound_cache:
         return _sound_cache[name]
@@ -60,18 +58,15 @@ def load_sound(name):
     _sound_cache[name] = sound
     return sound
 
-# ----------------------------
+
 # Music loading (streamed)
-# ----------------------------
+# Usage:
+# pygame.mixer.music.load(load_music("bg.mp3"))
 def load_music(name):
     return asset_path("music", name)
 
-# Usage:
-# pygame.mixer.music.load(load_music("bg.mp3"))
 
-# ----------------------------
 # Font loading
-# ----------------------------
 def load_font(name, size):
     key = (name, size)
 
@@ -84,9 +79,8 @@ def load_font(name, size):
     _font_cache[key] = font
     return font
 
-# ----------------------------
-# Utility (debugging)
-# ----------------------------
+
+# Utility (Debug)
 def print_paths():
     print("BASE_PATH:", BASE_PATH)
     print("ASSETS_PATH:", ASSETS_PATH)

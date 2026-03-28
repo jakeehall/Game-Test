@@ -1,4 +1,3 @@
-#Imports
 import time
 import pygame
 from pygame.locals import QUIT
